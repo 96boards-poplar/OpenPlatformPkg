@@ -1,0 +1,51 @@
+#
+#  Copyright (c) 2014-2017, Linaro Limited. All rights reserved.
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010019
+  BASE_NAME                      = PoplarLib
+  FILE_GUID                      = ca93d4c5-77db-46b5-adb8-4de01cb7822f
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  OpenPlatformPkg/Chips/Hisilicon/Hi3798cv200/Hi3798cv200.dec
+  OpenPlatformPkg/Platforms/Hisilicon/Poplar/Poplar.dec
+
+[LibraryClasses]
+  ArmLib
+  HobLib
+  IoLib
+  MemoryAllocationLib
+  SerialPortLib
+
+[Sources.common]
+  Poplar.c
+  PoplarMem.c
+
+[Sources.AARCH64]
+  PoplarHelper.S
+
+[FeaturePcd]
+  gEmbeddedTokenSpaceGuid.PcdCacheEnable
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize

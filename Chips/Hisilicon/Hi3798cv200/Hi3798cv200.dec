@@ -1,0 +1,33 @@
+#
+#  Copyright (c) 2014-2017, Linaro Limited. All rights reserved.
+#  Copyright (c) 2014-2017, Hisilicon Limited. All rights reserved.
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+
+[Defines]
+  DEC_SPECIFICATION             = 0x00010019
+  PACKAGE_NAME                  = Poplar
+  PACKAGE_GUID                  = f0dedbbf-bcd5-4eb5-9bb6-2f43b30d3780
+  PACKAGE_VERSION               = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+# Supported Module Types:
+#  BASE SEC PEI_CORE PEIM DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER DXE_SAL_DRIVER UEFI_DRIVER UEFI_APPLICATION
+#
+################################################################################
+[Includes.common]
+  Include                       # Root include for the package
+
+[Guids.common]
+  gHi3798cv200TokenSpaceGuid    =  { 0x3046f577, 0x111e, 0x4860, { 0xa9, 0xe9, 0xd9, 0x81, 0x24, 0xe2, 0xd9, 0x30 } }
