@@ -98,7 +98,7 @@ ResetEndpoints (
   WRITE_REG32 (DIEPINT0, ~0);
   WRITE_REG32 (DOEPINT0, ~0);
   WRITE_REG32 (DIEPINT1, ~0);
-  WRITE_REG32 (DOEPINT1, ~0);
+  WRITE_REG32 (DOEPINT2, ~0);
 
   /* IN EP interrupt mask */
   WRITE_REG32 (DIEPMSK, DXEPMSK_TIMEOUTMSK | DXEPMSK_AHBERMSK | DXEPMSK_XFERCOMPLMSK);
@@ -349,6 +349,7 @@ UsbDrvRequestEndpoint (
   )
 {
   UINTN              Ep = 1;
+  UINTN              OutEp = 2;
   UINTN              Ret, NewBits;
 
   Ret = Ep | Dir;
@@ -364,7 +365,7 @@ UsbDrvRequestEndpoint (
   if (Dir) {  // IN: to host
     WRITE_REG32 (DIEPCTL (Ep), ((READ_REG32 (DIEPCTL (Ep))) & ~DXEPCTL_EPTYPE_MASK) | NewBits | (Ep << 22) | DXEPCTL_NAKSTS);
   } else {    // OUT: to device
-    WRITE_REG32 (DOEPCTL (Ep), ((READ_REG32 (DOEPCTL (Ep))) & ~DXEPCTL_EPTYPE_MASK) | NewBits);
+    WRITE_REG32 (DOEPCTL (OutEp), ((READ_REG32 (DOEPCTL (OutEp))) & ~DXEPCTL_EPTYPE_MASK) | NewBits);
   }
 
   return Ret;
@@ -389,7 +390,7 @@ HandleSetConfiguration (
   /* Enable interrupts on all endpoints */
   WRITE_REG32 (DAINTMSK, ~0);
 
-  EpRx (1, CMD_SIZE);
+  EpRx (2, CMD_SIZE);
   EpTx (0, 0, 0);
   return EFI_SUCCESS;
 }
@@ -461,7 +462,7 @@ CheckInterrupts (
     //Set Maximum In Packet Size (MPS)
     WRITE_REG32 (DIEPCTL1, ((READ_REG32 (DIEPCTL1)) & ~DXEPCTL_MPS_MASK) | MaxPacket);
     //Set Maximum Out Packet Size (MPS)
-    WRITE_REG32 (DOEPCTL1, ((READ_REG32 (DOEPCTL1)) & ~DXEPCTL_MPS_MASK) | MaxPacket);
+    WRITE_REG32 (DOEPCTL2, ((READ_REG32 (DOEPCTL2)) & ~DXEPCTL_MPS_MASK) | MaxPacket);
   }
 
   /*
@@ -545,9 +546,9 @@ CheckInterrupts (
       WRITE_REG32 (DOEPCTL0, DXEPCTL_EPENA | DXEPCTL_CNAK);
     }
 
-    EpInts = (READ_REG32 (DOEPINT1));
+    EpInts = (READ_REG32 (DOEPINT2));
     if (EpInts) {
-      WRITE_REG32 (DOEPINT1, EpInts);
+      WRITE_REG32 (DOEPINT2, EpInts);
       /* Transfer Completed Interrupt (XferCompl);Transfer completed */
       if (EpInts & DXEPINT_XFERCOMPL) {
 
@@ -573,7 +574,7 @@ CheckInterrupts (
           Len = mNumDataBytes;
         }
 
-        EpRx (1, Len);
+        EpRx (2, Len);
       }
     }
   }
