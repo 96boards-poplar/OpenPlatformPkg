@@ -47,6 +47,7 @@
 
 [Pcd]
   gDwUsbDxeTokenSpaceGuid.PcdDwUsbDxeBaseAddress
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbDxeInsaneFifoSettings
 
 [Depex]
   BEFORE gAndroidFastbootUsbGuid

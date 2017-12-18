@@ -44,3 +44,6 @@
   # DwUsb Driver PCDs
   gDwUsbDxeTokenSpaceGuid.PcdDwUsbDxeBaseAddress|0x0|UINT32|0x00000001
   gDwUsbDxeTokenSpaceGuid.PcdSysCtrlBaseAddress|0x0|UINT32|0x00000002
+
+[PcdsFeatureFlag.common]
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbDxeInsaneFifoSettings|TRUE|BOOLEAN|0x00000100
