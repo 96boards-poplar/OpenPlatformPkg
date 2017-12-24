@@ -1595,19 +1595,27 @@ DwEmmcExecTrb (
   ErrMask = DW_MMC_INT_EBE | DW_MMC_INT_HLE | DW_MMC_INT_RTO |
             DW_MMC_INT_RCRC | DW_MMC_INT_RE;
   ErrMask |= DW_MMC_INT_DCRC | DW_MMC_INT_DRT | DW_MMC_INT_SBE;
+  // Check command done first
   do {
     MicroSecondDelay (500);
     Status = DwMmcHcRwMmio (PciIo, Trb->Slot, DW_MMC_RINTSTS, TRUE, sizeof (IntStatus), &IntStatus);
     if (EFI_ERROR (Status)) {
       return Status;
     }
-    if (IntStatus & ErrMask) {
-      return EFI_DEVICE_ERROR;
-    }
-    if (IntStatus & DW_MMC_INT_DTO) {  // Transfer Done
-      break;
-    }
   } while (!(IntStatus & DW_MMC_INT_CMD_DONE));
+  // Then check data transfer over
+  if (Cmd & BIT_CMD_DATA_EXPECTED) {
+    do {
+      MicroSecondDelay (500);
+      Status = DwMmcHcRwMmio (PciIo, Trb->Slot, DW_MMC_RINTSTS, TRUE, sizeof (IntStatus), &IntStatus);
+      if (EFI_ERROR (Status)) {
+        return Status;
+      }
+      if (IntStatus & ErrMask) {
+        return EFI_DEVICE_ERROR;
+      }
+    } while (!(IntStatus & DW_MMC_INT_DTO));
+  }
   switch (Packet->SdMmcCmdBlk->ResponseType) {
     case SdMmcResponseTypeR1:
     case SdMmcResponseTypeR1b:
