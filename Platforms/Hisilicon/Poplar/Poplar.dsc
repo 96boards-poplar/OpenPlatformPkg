@@ -308,6 +308,7 @@
   DEFINE SERIAL_BASE = 0xF8B00000 # UART0
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|$(SERIAL_BASE)
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
   gArmPlatformTokenSpaceGuid.PL011UartInteger|40
   gArmPlatformTokenSpaceGuid.PL011UartFractional|44 # 40+0.6875
 
